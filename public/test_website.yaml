@@ -1,0 +1,7 @@
+website#testwebsite:
+  - div: Test 1234
+  - div: 
+    - div#diff: Noch ein Test
+    - div: Noch ein Test 2
+    - script: test_script.js
+      
