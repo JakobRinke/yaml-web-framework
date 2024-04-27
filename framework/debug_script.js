@@ -45,11 +45,14 @@ function start_server() {
                 return;
             }
         } 
-    
         website_creator.build_all();
         update = true;
-        
+    });
 
+    fs.watch('./packages', { recursive: true }, async (eventType, filename) => {
+        const website_creator = require('./website_creator.js');
+        website_creator.build_all();
+        update = true;
     });
 
     const server = http.createServer(function (req, res) {
