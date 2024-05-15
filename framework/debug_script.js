@@ -45,13 +45,24 @@ function start_server() {
                 return;
             }
         } 
-        website_creator.build_all();
+        try {
+            website_creator.build_all();
+        } catch (e) {
+            console.error("Error building all: ")
+            console.error(e);
+        }
+        
         update = true;
     });
 
     fs.watch('./packages', { recursive: true }, async (eventType, filename) => {
         const website_creator = require('./website_creator.js');
-        website_creator.build_all();
+        try {
+            website_creator.build_all();
+        } catch (e) {
+            console.error("Error building all: ")
+            console.error(e);
+        }
         update = true;
     });
 

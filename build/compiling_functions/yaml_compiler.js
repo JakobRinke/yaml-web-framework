@@ -72,6 +72,7 @@ function getDataFromYamlKey(key) {
     return { filelink, id, _class, link };
 } 
 
+const default_element = '<{{TAG}} id="{{ID}}" class="{{CLASS}}">{{CONTENT}} </{{TAG}}>'
 
 async function yaml_to_html(config, basepaths=["/packages/", "/"], stack=[]) {
     //const config = yaml.load(yaml_str);
@@ -90,12 +91,14 @@ async function yaml_to_html(config, basepaths=["/packages/", "/"], stack=[]) {
 
         var { filelink, id, _class, link } = getDataFromYamlKey(key);
 
+        var found = false;
         for (const basepath of basepaths) {
             const filePath = basepath + filelink;
             const filetype = await is_html_or_yaml(filePath);
             if (filetype === 'html') {
                 const file_content = await cached_load(filePath + '.html');
                 current_html += file_content;
+                found = true;
                 break;
             } else if (filetype === 'yaml') {
                 if (stack.includes(filePath)) {
@@ -108,8 +111,13 @@ async function yaml_to_html(config, basepaths=["/packages/", "/"], stack=[]) {
                 stack = [...stack, filePath]
                 const html = await yaml_to_html(yaml_obj, basepaths, stack);
                 current_html += html;
+                found = true;
                 break;
             }
+        }
+
+        if (!found) {
+            current_html = default_element.replace(/{{TAG}}/g, filelink);
         }
 
         current_html = current_html.replace(/{{ID}}/g, id);

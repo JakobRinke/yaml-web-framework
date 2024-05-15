@@ -1,0 +1,16 @@
+website#testwebsite:
+  - main.container:
+    - h1: "Hello World"
+    - p: "This is a test website"
+    - table:
+      - thead:
+        - th: "Table"
+        - th: "Header"
+      - tbody:
+        - tr:
+          - td: "Table"
+          - td: "Row"
+        - tr:
+          - td: "Table 2"
+          - td: "Row 2"
+    - h6: "This is a test website"
